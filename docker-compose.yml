@@ -1,0 +1,28 @@
+services:
+  api:
+    build: ../blog-nestjs-api
+    image: blog-api
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DB_DATABASE: /usr/src/app/data/db.sqlite
+    volumes:
+      - ./dados/db:/usr/src/app/data
+      - ./dados/uploads:/usr/src/app/uploads
+    ports:
+      - "127.0.0.1:3001:3001"
+
+  web:
+    build:
+      context: ../blog-nextjs
+      args:
+        NEXT_PUBLIC_IMAGE_UPLOAD_MAX_SIZE: 921600
+    image: blog-front
+    restart: unless-stopped
+    env_file: .env.local
+    environment:
+      API_URL: http://api:3001
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
