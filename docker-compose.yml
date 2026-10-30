@@ -3,7 +3,7 @@ services:
     build: ../blog-nestjs-api
     image: blog-api
     restart: unless-stopped
-    env_file: .env
+    env_file: api.env
     environment:
       DB_DATABASE: /usr/src/app/data/db.sqlite
     volumes:
@@ -19,7 +19,7 @@ services:
         NEXT_PUBLIC_IMAGE_UPLOAD_MAX_SIZE: 921600
     image: blog-front
     restart: unless-stopped
-    env_file: .env.local
+    env_file: web.env
     environment:
       API_URL: http://api:3001
     ports:
