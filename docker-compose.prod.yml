@@ -1,0 +1,23 @@
+services:
+  api:
+    image: leobritodev/blog-api:0.1.0
+    restart: unless-stopped
+    env_file: api.env
+    environment:
+      DB_DATABASE: /usr/src/app/data/db.sqlite
+    volumes:
+      - ./dados/db:/usr/src/app/data
+      - ./dados/uploads:/usr/src/app/uploads
+    ports:
+      - "127.0.0.1:3001:3001"
+
+  web:
+    image: leobritodev/blog-front:0.1.1
+    restart: unless-stopped
+    env_file: web.env
+    environment:
+      API_URL: http://api:3001
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      - api

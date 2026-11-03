@@ -1,7 +1,7 @@
 services:
   api:
     build: ../blog-nestjs-api
-    image: blog-api
+    image: leobritodev/blog-api:0.1.0
     restart: unless-stopped
     env_file: api.env
     environment:
@@ -17,7 +17,7 @@ services:
       context: ../blog-nextjs
       args:
         NEXT_PUBLIC_IMAGE_UPLOAD_MAX_SIZE: 921600
-    image: blog-front
+    image: leobritodev/blog-front:0.1.1
     restart: unless-stopped
     env_file: web.env
     environment:
