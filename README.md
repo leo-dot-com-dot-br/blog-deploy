@@ -40,7 +40,7 @@ The images are built from the Dockerfile in each project repository and pushed t
 | ------------------------------------ | -------------------------------------------------------------------------------------- |
 | `docker-compose.prod.yml`            | Production services (front end and API)                                                |
 | `api.env-EXAMPLE`, `web.env-EXAMPLE` | Templates for the environment variables of each container                              |
-| `nginx/thenextblog.conf`             | NGINX routing (HTTP only; Certbot adds the HTTPS block when it issues the certificate) |
+| `nginx/your_domain.conf`             | NGINX routing (HTTP only; Certbot adds the HTTPS block when it issues the certificate) |
 
 ## Deploying
 
@@ -59,15 +59,15 @@ The images are built from the Dockerfile in each project repository and pushed t
    ```bash
    docker compose -f docker-compose.prod.yml up -d
    ```
-10. **NGINX.** Install NGINX and Certbot. Copy `nginx/thenextblog.conf` to `/etc/nginx/sites-available/thenextblog`, link it into `sites-enabled`, and test the configuration:
+10. **NGINX.** Install NGINX and Certbot. Copy `nginx/your_domain.conf` to `/etc/nginx/sites-available/yourdomain`, link it into `sites-enabled`, and test the configuration:
     ```bash
-    sudo ln -s /etc/nginx/sites-available/thenextblog /etc/nginx/sites-enabled/
+    sudo ln -s /etc/nginx/sites-available/your_domain /etc/nginx/sites-enabled/
     sudo nginx -t
     ```
 11. **HTTP check.** Reload NGINX and open the domain over HTTP. Certbot needs the site to answer on port 80 to validate the domain.
 12. **HTTPS.** Issue the certificate with Certbot, then restart NGINX:
     ```bash
-    sudo certbot --nginx -d thenextblog.duckdns.org
+    sudo certbot --nginx -d your_domain
     sudo systemctl restart nginx
     ```
 
@@ -95,3 +95,4 @@ The images are built from the Dockerfile in each project repository and pushed t
 - Single server and a single SQLite file: no redundancy, and a server failure takes the site down.
 - No automated backups of the database or the uploaded images.
 - No monitoring or alerts.
+- Database schema is created by TypeORM synchronize (no migrations).
